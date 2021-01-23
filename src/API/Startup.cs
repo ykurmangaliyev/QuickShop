@@ -12,9 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols;
 using MongoDB.Driver;
-using Newtonsoft.Json.Serialization;
 using QuickShop.Domain.Accounts.Authentication;
 using QuickShop.Domain.Accounts.Authentication.HashingAlgorithm;
 using QuickShop.Domain.Accounts.Model.UserAggregate;
@@ -37,13 +35,10 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver
-                    {
-                        NamingStrategy = new CamelCaseNamingStrategy()
-                    };
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null; // makes it serialize to camelCase
                 });
 
             services.AddTransient<IHashingAlgorithm, Sha512HashingAlgorithm>();

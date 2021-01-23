@@ -21,13 +21,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.Mongo.Tests", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{0E96DD38-38C1-42AA-9C81-E7D3908F2CCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scripts", "Scripts\Scripts.csproj", "{8683BE18-AED7-4D66-A9D3-2CA2E8938D41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scripts", "Scripts\Scripts.csproj", "{8683BE18-AED7-4D66-A9D3-2CA2E8938D41}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.Extensions.Tests", "Extensions.Security.Tests\Security.Extensions.Tests.csproj", "{2E46C841-190F-4A10-A176-F325E34FC904}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions.Configuration", "Extensions.Configuration\Extensions.Configuration.csproj", "{43C23DF3-7207-47CE-96DB-29AE421C4B6D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions.Security", "Extensions.Security\Extensions.Security.csproj", "{3C395002-60E4-44E6-90BB-A52757CFBB86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{7F0AD741-1B56-4DAB-A125-663CF1BD178E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,10 @@ Global
 		{3C395002-60E4-44E6-90BB-A52757CFBB86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C395002-60E4-44E6-90BB-A52757CFBB86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C395002-60E4-44E6-90BB-A52757CFBB86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0AD741-1B56-4DAB-A125-663CF1BD178E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0AD741-1B56-4DAB-A125-663CF1BD178E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0AD741-1B56-4DAB-A125-663CF1BD178E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0AD741-1B56-4DAB-A125-663CF1BD178E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
