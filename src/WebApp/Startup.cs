@@ -1,3 +1,4 @@
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,7 +63,7 @@ namespace WebApp
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        ValidateAudience = true,
+                        ValidateAudience = false,
                         ValidateIssuer = false,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.SymmetricKey)),
                     };
@@ -71,8 +72,32 @@ namespace WebApp
 
                     options.Events = new JwtBearerEvents
                     {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies[JwtBearerAuthenticationOptions.JwtBearerAuthentication];
+                            return Task.CompletedTask;
+                        },
                         OnChallenge = context =>
                         {
+                            return Task.CompletedTask;
+                        },
+                        OnTokenValidated = context =>
+                        {
+                            var cookie = context.Request.Cookies[JwtBearerAuthenticationOptions.JwtBearerAuthentication];
+
+                            if (cookie != null)
+                            {
+                                context.Response.Cookies.Append(
+                                    JwtBearerAuthenticationOptions.JwtBearerAuthentication, 
+                                    cookie,
+                                    new CookieOptions
+                                    {
+                                        Expires = DateTimeOffset.Now.AddDays(7),
+                                        HttpOnly = false,
+                                    }
+                                );
+                            }
+
                             return Task.CompletedTask;
                         }
                     };
@@ -93,8 +118,11 @@ namespace WebApp
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseDefaultFiles();
+            var defaultFileOptions = new DefaultFilesOptions();
+            defaultFileOptions.DefaultFileNames.Clear();
+            defaultFileOptions.DefaultFileNames.Add("index.html");
 
+            app.UseDefaultFiles(defaultFileOptions);
             app.UseStaticFiles();
 
             app.UseAuthentication();

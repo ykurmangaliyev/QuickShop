@@ -28,12 +28,9 @@ namespace WebApp.Authentication
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(CustomClaimTypes.Id, user.Id),
-                    new Claim(ClaimTypes.Name, user.Credentials.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.Credentials.Username),
                 }),
                 
-                Issuer = _jwtOptions.Authority,
-                Audience = _jwtOptions.Audience,
-
                 IssuedAt = DateTime.UtcNow,
                 Expires = DateTime.UtcNow.Add(TimeSpan.FromSeconds(_jwtOptions.ExpirationTimeInSeconds)),
                 

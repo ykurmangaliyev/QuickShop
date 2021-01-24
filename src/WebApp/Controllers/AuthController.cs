@@ -1,6 +1,9 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuickShop.Domain.Accounts;
 using QuickShop.Domain.Accounts.Authentication;
@@ -27,7 +30,7 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<ActionResult<AuthenticateResponse>> Authenticate(AuthenticateRequest request)
+        public async Task<ActionResult<AuthenticateResponse>> SignIn(AuthenticateRequest request)
         {
             var authAttempt = await _userAuthService.AuthenticateAsync(request.Username, request.Password);
 
@@ -39,11 +42,28 @@ namespace WebApp.Controllers
                 });
             }
 
+            Response.Cookies.Append(
+                JwtBearerAuthenticationOptions.JwtBearerAuthentication,
+                _jwtTokenGenerator.CreateToken(authAttempt.User),
+                new CookieOptions
+                {
+                    Expires = DateTimeOffset.Now.AddDays(7),
+                    HttpOnly = false,
+                }
+            );
+
             return Ok(new AuthenticateResponse
             {
                 ResultCode = authAttempt.Code.ToString("G"),
-                Token = _jwtTokenGenerator.CreateToken(authAttempt.User),
             });
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public new ActionResult SignOut()
+        {
+            Response.Cookies.Delete(JwtBearerAuthenticationOptions.JwtBearerAuthentication);
+            return Ok();
         }
     }
 }
