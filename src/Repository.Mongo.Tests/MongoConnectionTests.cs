@@ -14,7 +14,7 @@ namespace QuickShop.Repository.Mongo.Tests
         [TestMethod]
         public async Task Should_ConnectToRemoteMongoCluster()
         {
-            var collection = ClientWrapper.GetDatabase().GetCollection<BsonDocument>(DefaultCollectionName);
+            var collection = CreateDatabaseContext(_ => DefaultCollectionName).GetCollection<BsonDocument>();
 
             string objectId = ObjectId.GenerateNewId().ToString();
 

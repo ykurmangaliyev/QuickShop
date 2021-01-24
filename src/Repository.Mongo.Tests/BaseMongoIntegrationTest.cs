@@ -1,35 +1,35 @@
 using System;
 using System.Configuration;
 using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using QuickShop.Extensions.Configuration;
+using QuickShop.Domain.Accounts.Model.UserAggregate;
+using QuickShop.Repository.Mongo.CollectionNameMapping;
+using QuickShop.Repository.Mongo.Configuration;
 
 namespace QuickShop.Repository.Mongo.Tests
 {
     public abstract class BaseMongoIntegrationTest
     {
-        protected MongoClientWrapper ClientWrapper { get; }
+        private readonly MongoOptions _mongoOptions;
+
+        protected MongoDatabaseContext CreateDatabaseContext(Func<Type, string> collectionNameMapper)
+            => CreateDatabaseContext(new CodedCollectionNameMapper(collectionNameMapper));
+
+        protected MongoDatabaseContext CreateDatabaseContext(ICollectionNameMapper collectionNameMapper)
+        {
+            return new(new OptionsWrapper<MongoOptions>(_mongoOptions), collectionNameMapper);
+        }
 
         protected BaseMongoIntegrationTest()
         {
-            var configuration = ConfigurationExtensions.LoadConfigurationUserFile("MongoIntegrationTests");
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("test-settings.json")
+                .AddJsonFile("test-settings.user.json", optional: true)
+                .Build();
 
-            string connectionString = configuration.ConnectionStrings.ConnectionStrings["Mongo"].ConnectionString;
-            string databaseName = configuration.AppSettings.Settings["DatabaseName"].Value;
-
-            var mongoClientSettings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
-
-            // Uncomment this part to debug Mongo commands:
-            
-            /*
-            mongoClientSettings.ClusterConfigurator = cb => {
-                cb.Subscribe<CommandStartedEvent>(e => { Console.WriteLine($"{e.CommandName} - {e.Command.ToJson()}"); });
-            };
-            */
-
-            var client = new MongoClient(mongoClientSettings);
-
-            ClientWrapper = new MongoClientWrapper(client, databaseName);
+            _mongoOptions = configuration.GetSection(MongoOptions.Mongo).Get<MongoOptions>();
         }
     }
 }

@@ -8,4 +8,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DependencyInjection\DependencyInjection.csproj" />
+    <ProjectReference Include="..\Domain.Accounts\Domain.Accounts.csproj" />
+    <ProjectReference Include="..\Repository.Mongo\Repository.Mongo.csproj" />
+  </ItemGroup>
+
 </Project>

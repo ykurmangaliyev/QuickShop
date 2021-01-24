@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using QuickShop.Domain.Accounts;
 using QuickShop.Domain.Accounts.Authentication;
 using QuickShop.Domain.Accounts.Authentication.HashingAlgorithm;
 using QuickShop.Domain.Accounts.Model.UserAggregate;
+using QuickShop.Repository.Abstractions;
 
 namespace QuickShop.Accounts.Tests.Authentication
 {
@@ -16,7 +18,7 @@ namespace QuickShop.Accounts.Tests.Authentication
         [TestMethod]
         public async Task When_UserHasNotBeenFound_Should_ReturnAuthenticationResult_With_InvalidCredentialsCode()
         {
-            IUserAuthService service = CreateMockService();
+            IUserAuthService service = await CreateMockService();
 
             var authenticationResult = await service.AuthenticateAsync(IncorrectUsername, CorrectPassword);
 
@@ -27,7 +29,7 @@ namespace QuickShop.Accounts.Tests.Authentication
         [TestMethod]
         public async Task When_PasswordMismatches_Should_ReturnAuthenticationResult_With_InvalidCredentialsCode()
         {
-            IUserAuthService service = CreateMockService();
+            IUserAuthService service = await CreateMockService();
 
             var authenticationResult = await service.AuthenticateAsync(CorrectUsername, IncorrectPassword);
 
@@ -38,7 +40,7 @@ namespace QuickShop.Accounts.Tests.Authentication
         [TestMethod]
         public async Task When_CredentialsAreValid_Should_ReturnAuthenticationResult_With_SuccessCodeAndUser()
         {
-            IUserAuthService service = CreateMockService();
+            IUserAuthService service = await CreateMockService();
 
             var authenticationResult = await service.AuthenticateAsync(CorrectUsername, CorrectPassword);
 
@@ -51,41 +53,14 @@ namespace QuickShop.Accounts.Tests.Authentication
         private const string CorrectPassword = "my-password";
         private const string IncorrectPassword = "another-password";
 
-        private IUserAuthService CreateMockService()
+        private async Task<IUserAuthService> CreateMockService()
         {
             IHashingAlgorithm hashingAlgorithm = new MockHashingAlgorithm();
 
-            User user = new User(DateTimeOffset.Now, new UserCredentials(CorrectUsername, hashingAlgorithm.Hash(CorrectPassword)));
-
-            IUserRepository repository = new MockUserRepository(user);
+            IUserRepository repository = new UserRepository(new InMemoryDatabaseContext());
+            await repository.CreateAsync(CorrectUsername, hashingAlgorithm.Hash(CorrectPassword));
 
             return new UserAuthService(hashingAlgorithm, repository, new NullLogger());
-        }
-
-        private class MockUserRepository : IUserRepository
-        {
-            private readonly User _user;
-
-            public MockUserRepository(User user)
-            {
-                _user = user;
-            }
-
-            public Task<User> CreateAsync(string username, string passwordHash)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task<User> FindByUsernameOrDefaultAsync(string username)
-            {
-                if (_user == null)
-                    return Task.FromResult<User>(null);
-
-                if (_user.Credentials.Username != username)
-                    return Task.FromResult<User>(null);
-
-                return Task.FromResult(_user);
-            }
         }
 
         private class MockHashingAlgorithm : IHashingAlgorithm

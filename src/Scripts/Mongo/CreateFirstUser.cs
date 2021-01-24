@@ -1,36 +1,42 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Logging;
 using MongoDB.Driver;
 using QuickShop.Domain.Accounts.Authentication.HashingAlgorithm;
 using QuickShop.Domain.Accounts.Model.UserAggregate;
-using QuickShop.Extensions.Configuration;
+using QuickShop.Repository.Abstractions;
 using QuickShop.Repository.Mongo;
-using QuickShop.Repository.Mongo.Accounts;
 
 namespace QuickShop.Scripts.Mongo
 {
     internal class CreateFirstUser : IScript
     {
-        private readonly MongoClientWrapper _wrapper;
+        private const string Username = "first";
+        private const string Password = "password";
 
-        public CreateFirstUser(MongoClientWrapper wrapper)
+        private readonly IUserRepository _userRepository;
+        private readonly ILogger _logger;
+        private readonly IHashingAlgorithm _hashingAlgorithm;
+
+        public CreateFirstUser(IUserRepository userRepository, ILogger logger, IHashingAlgorithm hashingAlgorithm)
         {
-            _wrapper = wrapper;
+            _userRepository = userRepository;
+            _logger = logger;
+            _hashingAlgorithm = hashingAlgorithm;
         }
 
         public async Task Run()
         {
-            var userRepository = new MongoUserRepository(_wrapper);
-
-            var found = await userRepository.FindByUsernameOrDefaultAsync("first");
+            var found = await _userRepository.FindByUsernameOrDefaultAsync("first");
 
             if (found != null)
-                throw new InvalidOperationException("Already exists!");
+            {
+                _logger.Warning("The first user already exists!");
+                return;
+            }
 
-            string passwordHash = new Sha512HashingAlgorithm().Hash("password");
-            User user = new User(DateTimeOffset.Now, new UserCredentials("first", passwordHash));
-
-            await userRepository.CreateAsync(user);
+            var created = await _userRepository.CreateAsync(Username, _hashingAlgorithm.Hash(Password));
+            _logger.Info($"Created a first user! username=#{created.Credentials.Username}, id=#{created.Id}, password=#{created.Credentials.PasswordHash}");
         }
     }
 }

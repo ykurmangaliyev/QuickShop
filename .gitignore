@@ -351,3 +351,4 @@ MigrationBackup/
 
 # QuickShop project-specific config file suffix
 *.user.config
+*.user.json

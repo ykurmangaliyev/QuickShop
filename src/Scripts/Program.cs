@@ -1,29 +1,28 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using QuickShop.Extensions.Configuration;
+using QuickShop.DependencyInjection;
+using QuickShop.DependencyInjection.Repository;
 using QuickShop.Repository.Mongo;
-using QuickShop.Repository.Mongo.Accounts;
 using QuickShop.Scripts.Mongo;
 
 namespace QuickShop.Scripts
 {
+    /// <summary>
+    /// This class contains bootstrapper class, dependency injection and rendering logic.
+    /// If you want to update the list of scripts or add services to DI, <see cref="Startup"/>
+    /// </summary>
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
-            var configuration = ConfigurationExtensions.LoadConfigurationUserFile("Scripts");
+            var serviceProvider = BuildServiceProvider();
 
-            string connectionString = configuration.ConnectionStrings.ConnectionStrings["Mongo"].ConnectionString;
-            string databaseName = configuration.AppSettings.Settings["DatabaseName"].Value;
-
-            var clientWrapper = new MongoClientWrapper(new MongoClient(connectionString), databaseName);
-
-            var scripts = new IScript[]
-            {
-                new CreateFirstUser(clientWrapper),
-            };
+            var scripts = serviceProvider.GetRequiredService<IScript[]>();
 
             await PromptAndRunScript(scripts);
         }
@@ -51,6 +50,39 @@ namespace QuickShop.Scripts
 
             await scripts[inputNumber - 1].Run();
             Console.WriteLine("Completed!");
+        }
+
+        private static IServiceProvider BuildServiceProvider()
+        {
+            // Configuration
+            var configurationBuilder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.user.json", optional: true);
+
+            var configuration = configurationBuilder.Build();
+
+            // Create startup
+            var startup = new Startup(configuration);
+
+            var scriptTypes = startup.GetScripts();
+
+            // Service collection
+            var serviceCollection = new ServiceCollection();
+
+            startup.ConfigureServices(serviceCollection);
+
+            // Automatically register scripts and list of scripts
+            foreach (var scriptType in scriptTypes)
+            {
+                serviceCollection.AddTransient(scriptType);
+            }
+
+            serviceCollection.AddTransient<IScript[]>(sp =>
+            {
+                return scriptTypes.Select(scriptType => (IScript) sp.GetRequiredService(scriptType)).ToArray();
+            });
+            
+            return serviceCollection.BuildServiceProvider();
         }
     }
 }

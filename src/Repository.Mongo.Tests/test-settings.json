@@ -1,0 +1,6 @@
+{
+  "Mongo": {
+    "ConnectionString": "<Your connection string goes here>",
+    "DatabaseName": "integration-tests"
+  }
+}

@@ -6,49 +6,45 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using QuickShop.Domain.Accounts.Model.UserAggregate;
-using QuickShop.Repository.Mongo.Accounts;
+using QuickShop.Repository.Mongo.CollectionNameMapping;
 
 namespace QuickShop.Repository.Mongo.Tests.Accounts
 {
+    // TODO: it should not be tested here, Mongo should rely on user-specific logic. Instead, create a model for the test and check that the context works
     [TestClass]
     public class MongoUserRepositoryTests : BaseMongoIntegrationTest
     {
         [TestMethod]
         public async Task Should_WriteUserModel_And_ReadItBack()
         {
-            var repository = new MongoUserRepository(ClientWrapper);
-
-            var user = new User(DateTimeOffset.Now, new UserCredentials("username", "password"));
+            var repository = new UserRepository(CreateDatabaseContext(new TypeCollectionNameMapper()));
 
             // Write
-            var insertedUser = await repository.CreateAsync(user);
-            Assert.IsFalse(String.IsNullOrWhiteSpace(insertedUser.Token));
-            Assert.AreEqual(user.CreatedOn, user.CreatedOn);
-            Assert.AreEqual(user.Credentials.Username, insertedUser.Credentials.Username);
-            Assert.AreEqual(user.Credentials.PasswordHash, insertedUser.Credentials.PasswordHash);
+            var insertedUser = await repository.CreateAsync("username", "password-hash");
+            Assert.IsFalse(String.IsNullOrWhiteSpace(insertedUser.Id));
+            Assert.AreEqual("username", insertedUser.Credentials.Username);
+            Assert.AreEqual("password-hash", insertedUser.Credentials.PasswordHash);
 
             // Read by token succeeds
-            var readUser = await repository.FindByTokenOrDefaultAsync(insertedUser.Token);
-            Assert.AreEqual(insertedUser.Token, readUser.Token);
-            Assert.AreEqual(user.CreatedOn, readUser.CreatedOn);
-            Assert.AreEqual(user.Credentials.Username, readUser.Credentials.Username);
-            Assert.AreEqual(user.Credentials.PasswordHash, readUser.Credentials.PasswordHash);
+            var readUser = await repository.FindByIdOrDefaultAsync(insertedUser.Id);
+            Assert.AreEqual(insertedUser.Id, readUser.Id);
+            Assert.AreEqual(insertedUser.CreatedOn, readUser.CreatedOn);
+            Assert.AreEqual(insertedUser.Credentials.Username, readUser.Credentials.Username);
+            Assert.AreEqual(insertedUser.Credentials.PasswordHash, readUser.Credentials.PasswordHash);
 
             // Read by username succeeds
-            var readUserByUsername = await repository.FindByTokenOrDefaultAsync(insertedUser.Token);
-            Assert.AreEqual(insertedUser.Token, readUserByUsername.Token);
-            Assert.AreEqual(user.CreatedOn, readUserByUsername.CreatedOn);
-            Assert.AreEqual(user.Credentials.Username, readUserByUsername.Credentials.Username);
-            Assert.AreEqual(user.Credentials.PasswordHash, readUserByUsername.Credentials.PasswordHash);
+            var readUserByUsername = await repository.FindByIdOrDefaultAsync(insertedUser.Id);
+            Assert.AreEqual(insertedUser.Id, readUserByUsername.Id);
+            Assert.AreEqual(insertedUser.CreatedOn, readUserByUsername.CreatedOn);
+            Assert.AreEqual(insertedUser.Credentials.Username, readUserByUsername.Credentials.Username);
+            Assert.AreEqual(insertedUser.Credentials.PasswordHash, readUserByUsername.Credentials.PasswordHash);
 
             // Read by wrong token fails
-            await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () =>
-            {
-                await repository.FindByTokenOrDefaultAsync("other-token");
-            });
+            var otherUser = await repository.FindByIdOrDefaultAsync("other-token");
+            Assert.IsNull(otherUser);
             
             // Remove
-            await repository.DeleteAsync(insertedUser.Token);
+            await repository.DeleteAsync(insertedUser.Id);
         }
     }
 }
