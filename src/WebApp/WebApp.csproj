@@ -32,8 +32,6 @@
   <ItemGroup>
     <Folder Include="ClientApp\component\" />
     <Folder Include="ClientApp\page\" />
-    <Folder Include="wwwroot\dist\dev\" />
-    <Folder Include="wwwroot\dist\prod\" />
   </ItemGroup>
 
 </Project>

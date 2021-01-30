@@ -4,6 +4,8 @@ import * as ReactDOM from 'react-dom';
 import { getCurrentToken, getUserClaims } from './helper/authentication';
 import { auth, ping, UnauthorizedError } from './api/client';
 
+import Button from '@material-ui/core/Button';
+
 interface IAppState {
   auth: {
     token: string,
@@ -64,8 +66,8 @@ class App extends React.Component<IAppProps, IAppState>
     if (this.state.auth.token == null) {
       return (
         <div>
-          <button onClick={this.handleSignIn}>SignIn</button>
-          <button onClick={this.handlePing}>Ping</button>
+          <Button onClick={this.handleSignIn}>SignIn</Button>
+          <Button onClick={this.handlePing}>Ping</Button>
         </div>
       );
     };
@@ -73,8 +75,8 @@ class App extends React.Component<IAppProps, IAppState>
     return (
       <>
         <div>Hola! Your token is {this.state.auth.token}</div>
-        <button onClick={this.handleSignOut}>SignOut</button>
-        <button onClick={this.handlePing}>Ping</button>
+        <Button onClick={this.handleSignOut}>SignOut</Button>
+        <Button onClick={this.handlePing}>Ping</Button>
       </>
     );
   }
