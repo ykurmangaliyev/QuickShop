@@ -22,6 +22,7 @@ namespace QuickShop.WebApp.Controllers
             _executer = executer;
         }
 
+        // POST /graphql
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] GraphQLQueryModel query)
         {

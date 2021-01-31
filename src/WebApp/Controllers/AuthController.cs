@@ -23,7 +23,7 @@ namespace QuickShop.WebApp.Controllers
             _userAuthService = userAuthService;
         }
 
-        // POST /api/auth
+        // POST /auth
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -56,6 +56,7 @@ namespace QuickShop.WebApp.Controllers
             });
         }
 
+        // DELETE /auth
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public new ActionResult SignOut()

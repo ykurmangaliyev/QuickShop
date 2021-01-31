@@ -1,99 +1,42 @@
 ﻿import * as React from 'react';
+import { Provider } from 'react-redux';
 import * as ReactDOM from 'react-dom';
 
-import { signIn, signOut, getCurrentToken, getUserClaims } from './helper/authentication';
-
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
-import { makeQuery, gql } from './helper/graphql';
+import store from './store';
 
-interface IAppState {
-  auth: {
-    token: string,
-  },
-}
- 
-interface IAppProps { };
+import Home from './page/home';
 
-class App extends React.Component<IAppProps, IAppState>
-{
-  constructor(props: IAppProps) {
-    super(props);
-
-    this.state = {
-      auth: {
-        token: getCurrentToken(),
-      }
-    };
-
-    this.handleSignIn = this.handleSignIn.bind(this);
-    this.handleSignOut = this.handleSignOut.bind(this);
-    this.handlePing = this.handlePing.bind(this);
-  }
-
-  async handlePing(): Promise<void> {
-    const query = gql`
-      query Ping {
-        ping {  
-          serverTime
-          databaseStatus
-          databasePing
-        }
-      }
-    `;
-
-    let data = await makeQuery(query, {});
-
-    if (data) {
-      console.log(data);
-    }
-  }
-
-  async handleSignIn(): Promise<void> {
-    const result = await signIn("first", "password");
-
-    if (result.resultCode === "Success") {
-      this.setState({
-        auth: {
-          token: JSON.stringify(getUserClaims()),
-        },
-      });
-    }
-  }
-
-  async handleSignOut(): Promise<void> {
-    await signOut();
-
-    this.setState({
-      auth: {
-        token: null,
-      },
-    });
-  }
-
-  render(): React.ReactNode {
-    if (this.state.auth.token == null) {
-      return (
-        <div>
-          <Button onClick={this.handleSignIn}>SignIn</Button>
-          <Button onClick={this.handlePing}>Ping</Button>
-        </div>
-      );
-    };
-
-    return (
-      <>
-        <div>Hola! Your token is {JSON.stringify(getUserClaims())}</div>
-        <Button onClick={this.handleSignOut}>SignOut</Button>
-        <Button onClick={this.handlePing}>Ping</Button>
-      </>
-    );
-  }
+// Main part
+function App() {
+  return (
+    <React.Fragment>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6">
+            News
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Home/>
+    </React.Fragment>
+  );
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("app")
 );
