@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Net;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using QuickShop.Domain.Accounts;
 using QuickShop.Domain.Accounts.Authentication;
-using WebApp.Authentication;
-using WebApp.Model;
+using QuickShop.WebApp.Authentication;
+using QuickShop.WebApp.Model;
 
-namespace WebApp.Controllers
+namespace QuickShop.WebApp.Controllers
 {
     [ApiController]
-    [Route("api/auth")]
+    [Route("auth")]
     public class AuthController : Controller
     {
         private readonly JwtTokenGenerator _jwtTokenGenerator;

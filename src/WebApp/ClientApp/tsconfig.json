@@ -6,6 +6,7 @@
     "module": "commonjs",
     "target": "es6",
     "jsx": "react",
-    "lib": ["ES6", "DOM"]
+    "lib": [ "ES6", "DOM" ],
+    "allowSyntheticDefaultImports": true 
   }
 }

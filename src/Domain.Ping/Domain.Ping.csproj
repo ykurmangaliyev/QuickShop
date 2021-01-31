@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>QuickShop.Domain.Ping</AssemblyName>
+    <RootNamespace>QuickShop.Domain.Ping</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Repository.Abstractions\Repository.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

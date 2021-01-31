@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using QuickShop.Domain.Abstractions;
@@ -28,6 +30,19 @@ namespace QuickShop.Repository.Mongo
         {
             string collectionName = _collectionNameMapper.GetCollectionName<T>();
             return _client.GetDatabase(_mongoOptions.DatabaseName).GetCollection<T>(collectionName);
+        }
+
+        public Task<double?> PingAsync()
+        {
+            var database = _client.GetDatabase(_mongoOptions.DatabaseName);
+            
+            DateTime start = DateTime.Now;
+
+            bool pingReceived = database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait(5000);
+
+            double? elapsed = pingReceived ? (DateTime.Now - start).TotalMilliseconds : null;
+
+            return Task.FromResult(elapsed);
         }
 
         public async Task<T> CreateAsync<T>(T model) where T : IAggregateRoot

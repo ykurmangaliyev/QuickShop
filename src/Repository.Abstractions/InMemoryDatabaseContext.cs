@@ -28,7 +28,12 @@ namespace QuickShop.Repository.Abstractions
                 return newList;
             }
         }
-        
+
+        public Task<double?> PingAsync()
+        {
+            return Task.FromResult((double?)0.0);
+        }
+
         public Task<T> CreateAsync<T>(T model) where T : IAggregateRoot
         {
             GetList<T>().Add(model);

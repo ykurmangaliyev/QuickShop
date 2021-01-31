@@ -1,14 +1,14 @@
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Threading.Tasks;
-using Logging;
+using GraphiQl;
+using GraphQL;
+using GraphQL.NewtonsoftJson;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,12 +16,11 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using QuickShop.DependencyInjection;
 using QuickShop.DependencyInjection.Repository;
-using QuickShop.Domain.Accounts.Authentication;
-using QuickShop.Domain.Accounts.Authentication.HashingAlgorithm;
-using QuickShop.Repository.Mongo.Configuration;
-using WebApp.Authentication;
+using QuickShop.WebApp.Authentication;
+using QuickShop.WebApp.GraphQL;
+using QuickShop.WebApp.GraphQL.Ping;
 
-namespace WebApp
+namespace QuickShop.WebApp
 {
     public class Startup
     {
@@ -42,6 +41,9 @@ namespace WebApp
 
             services.AddQuickShop()
                 .AddMongoRepository();
+
+            // GraphQL
+            GraphQLSchema.RegisterAllServices(services);
 
             // API
             services.AddControllers();
@@ -124,6 +126,8 @@ namespace WebApp
 
             app.UseDefaultFiles(defaultFileOptions);
             app.UseStaticFiles();
+
+            app.UseGraphiQl("/graphiql", "/graphql");
 
             app.UseAuthentication();
 

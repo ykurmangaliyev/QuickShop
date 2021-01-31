@@ -7,6 +7,8 @@ namespace QuickShop.Repository.Abstractions
 {
     public interface IDatabaseContext
     {
+        Task<double?> PingAsync();
+
         Task<T> CreateAsync<T>(T model) where T : IAggregateRoot;
 
         Task<T> LoadAsync<T>(string id) where T : IAggregateRoot;

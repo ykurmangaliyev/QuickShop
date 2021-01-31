@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WebApp.Authentication
+﻿namespace QuickShop.WebApp.Authentication
 {
     public class JwtBearerAuthenticationOptions
     {

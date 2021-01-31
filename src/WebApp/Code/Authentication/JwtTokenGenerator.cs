@@ -2,12 +2,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using QuickShop.Domain.Accounts.Model.UserAggregate;
 
-namespace WebApp.Authentication
+namespace QuickShop.WebApp.Authentication
 {
     public class JwtTokenGenerator
     {

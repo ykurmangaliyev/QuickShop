@@ -10,6 +10,45 @@ export interface IUserClaims {
   id: string,
 }
 
+export interface IAuthResult {
+  resultCode: string,
+}
+
+// Main part
+export async function signIn(username: string, password: string): Promise<IAuthResult> {
+  const result = await fetch('/auth',
+    {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+  if (result.status !== 200 && result.status !== 401)
+    throw 'Unexpected response for the sign-in request';
+
+  const responseBody = await result.json();
+
+  return { resultCode: responseBody.resultCode };
+}
+
+export async function signOut(): Promise<void> {
+  const result = await fetch('/auth',
+    {
+      method: 'DELETE',
+      body: '{}',
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+  if (result.status !== 200)
+    throw 'Unexpected response for the sign-out request';
+}
+
 export function getCurrentToken() : string
 {
   return new Cookies().get(cookieName);

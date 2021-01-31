@@ -1,10 +1,11 @@
 ﻿import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { getCurrentToken, getUserClaims } from './helper/authentication';
-import { auth, ping, UnauthorizedError } from './api/client';
+import { signIn, signOut, getCurrentToken, getUserClaims } from './helper/authentication';
 
 import Button from '@material-ui/core/Button';
+
+import { makeQuery, gql } from './helper/graphql';
 
 interface IAppState {
   auth: {
@@ -31,17 +32,27 @@ class App extends React.Component<IAppProps, IAppState>
   }
 
   async handlePing(): Promise<void> {
-    let result = await ping.ping();
+    const query = gql`
+      query Ping {
+        ping {  
+          serverTime
+          databaseStatus
+          databasePing
+        }
+      }
+    `;
 
-    if (result.ok) {
-      console.log(result);
+    let data = await makeQuery(query, {});
+
+    if (data) {
+      console.log(data);
     }
   }
 
   async handleSignIn(): Promise<void> {
-    let result = await auth.signIn("first", "password");
+    const result = await signIn("first", "password");
 
-    if (result.ok && result.resultCode === "Success") {
+    if (result.resultCode === "Success") {
       this.setState({
         auth: {
           token: JSON.stringify(getUserClaims()),
@@ -51,15 +62,13 @@ class App extends React.Component<IAppProps, IAppState>
   }
 
   async handleSignOut(): Promise<void> {
-    let result = await auth.signOut();
+    await signOut();
 
-    if (result.ok) {
-      this.setState({
-        auth: {
-          token: null,
-        },
-      });
-    }
+    this.setState({
+      auth: {
+        token: null,
+      },
+    });
   }
 
   render(): React.ReactNode {
@@ -74,7 +83,7 @@ class App extends React.Component<IAppProps, IAppState>
 
     return (
       <>
-        <div>Hola! Your token is {this.state.auth.token}</div>
+        <div>Hola! Your token is {JSON.stringify(getUserClaims())}</div>
         <Button onClick={this.handleSignOut}>SignOut</Button>
         <Button onClick={this.handlePing}>Ping</Button>
       </>

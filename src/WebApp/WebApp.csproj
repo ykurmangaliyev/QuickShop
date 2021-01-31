@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>QuickShop.WebApp</AssemblyName>
+    <RootNamespace>QuickShop.WebApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="graphiql" Version="2.0.0" />
+    <PackageReference Include="GraphQL" Version="3.3.2" />
+    <PackageReference Include="GraphQL.NewtonsoftJson" Version="3.3.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.11" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.2" />
@@ -20,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DependencyInjection\DependencyInjection.csproj" />
     <ProjectReference Include="..\Domain.Accounts\Domain.Accounts.csproj" />
+    <ProjectReference Include="..\Domain.Ping\Domain.Ping.csproj" />
     <ProjectReference Include="..\Repository.Mongo\Repository.Mongo.csproj" />
   </ItemGroup>
 

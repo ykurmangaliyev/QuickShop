@@ -1,4 +1,4 @@
-﻿namespace WebApp
+﻿namespace QuickShop.WebApp
 {
     public class CustomClaimTypes
     {

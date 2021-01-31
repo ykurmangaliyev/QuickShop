@@ -1,4 +1,4 @@
-﻿namespace WebApp.Model
+﻿namespace QuickShop.WebApp.Model
 {
     public class AuthenticateResponse
     {
