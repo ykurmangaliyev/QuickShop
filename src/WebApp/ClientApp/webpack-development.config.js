@@ -34,6 +34,28 @@ module.exports = {
         loader: "source-map-loader"
       },
       {
+        test: /\.css/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '',
+            }
+          }, 
+          {
+            loader: 'css-loader'
+          },
+        ]
+      },
+      {
+        test: /\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
+        loader: 'file-loader',
+        options: {
+          publicPath: 'assets',
+          outputPath: 'assets'
+        }
+      },
+      {
         test: /\.less/,
         use: [
           MiniCssExtractPlugin.loader,

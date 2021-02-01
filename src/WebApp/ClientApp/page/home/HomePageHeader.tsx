@@ -1,0 +1,37 @@
+﻿import * as React from 'react';
+
+import { Container } from "reactstrap";
+
+// Main part
+export default function HomeHeader() {
+  return (
+    <React.Fragment>
+      <div className="wrapper index-page">
+        <div className="page-header clear-filter" filter-color="blue">
+          <div className="page-header-image"></div>
+          <Container>
+            <div className="content-center brand">
+              blabla
+              <h1 className="h1-seo">Now UI Kit.</h1>
+              <h3>A beautiful Bootstrap 4 UI kit. Yours free.</h3>
+            </div>
+            <h6 className="category category-absolute">
+              Created by{" "}
+              <a href="https://kurmangaliyev.kz" target="_blank">
+                Yeldar Kurmangaliyev
+              </a>
+            . Design by{" "}
+              <a
+                href="https://creative-tim.com/"
+                target="_blank"
+              >
+                Creative Tim
+              </a>
+            .
+          </h6>
+          </Container>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+}

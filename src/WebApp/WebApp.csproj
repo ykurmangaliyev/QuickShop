@@ -14,6 +14,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="ClientApp\vendor\now-ui-kit\css\bootstrap.min.css" />
+    <Content Include="ClientApp\vendor\now-ui-kit\css\bootstrap.min.css.map" />
+    <Content Include="ClientApp\vendor\now-ui-kit\css\now-ui-kit.css" />
+    <Content Include="ClientApp\vendor\now-ui-kit\css\now-ui-kit.css.map" />
+    <Content Include="ClientApp\vendor\now-ui-kit\css\now-ui-kit.min.css" />
+    <Content Include="ClientApp\vendor\now-ui-kit\fonts\nucleo-license.md" />
+    <Content Include="ClientApp\vendor\now-ui-kit\fonts\nucleo-outline.eot" />
+    <Content Include="ClientApp\vendor\now-ui-kit\fonts\nucleo-outline.ttf" />
+    <Content Include="ClientApp\vendor\now-ui-kit\fonts\nucleo-outline.woff" />
+    <Content Include="ClientApp\vendor\now-ui-kit\fonts\nucleo-outline.woff2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="graphiql" Version="2.0.0" />
     <PackageReference Include="GraphQL" Version="3.3.2" />
     <PackageReference Include="GraphQL.NewtonsoftJson" Version="3.3.2" />
