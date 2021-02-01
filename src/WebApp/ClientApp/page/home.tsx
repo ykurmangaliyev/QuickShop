@@ -1,4 +1,6 @@
-﻿import * as React from 'react';
+﻿import './home.less';
+
+import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
@@ -15,7 +17,7 @@ export default function Home() {
 
   if (authenticationState.token == null) {
     return (
-      <div>
+      <div className="test">
         <Button onClick={() => dispatch(signInAsync("first", "password"))}>SignIn</Button>
         <Button onClick={() => dispatch(pingAsync())}>Ping</Button>
       </div>
