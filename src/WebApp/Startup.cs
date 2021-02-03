@@ -139,6 +139,8 @@ namespace QuickShop.WebApp
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSpa(_ => { });
         }
     }
 }
