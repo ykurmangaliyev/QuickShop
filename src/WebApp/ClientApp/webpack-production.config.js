@@ -9,7 +9,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"]
   },
-  entry: "./app.tsx",
+  entry: "./index.tsx",
   output: {
     path: path.resolve(__dirname, "../wwwroot/dist/prod"),
     filename: "[name].js"

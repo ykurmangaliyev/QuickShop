@@ -1,4 +1,4 @@
-﻿import { makeQuery, gql } from '../../helper/graphql';
+﻿import { makeQuery, gql } from '../../graphql/graphql';
 
 export const pingAsync = () => {
   return async function (dispatch: any): Promise<void> {

@@ -1,6 +1,6 @@
 ﻿import { configureStore } from '@reduxjs/toolkit';
 
-import authenticationReducer, { IAuthenticationSliceState } from './feature/authentication/authenticationSlice';
+import authenticationReducer, { IAuthenticationSliceState } from '../feature/authentication/authenticationSlice';
 
 export default configureStore({
   reducer: {

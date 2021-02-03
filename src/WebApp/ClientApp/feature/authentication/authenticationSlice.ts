@@ -66,6 +66,7 @@ const postsSlice = createSlice({
     },
     signOutSucceeded(state: IAuthenticationSliceState, action: PayloadAction<void>): void {
       state.token = null;
+      state.user = null;
     },
   },
 });
