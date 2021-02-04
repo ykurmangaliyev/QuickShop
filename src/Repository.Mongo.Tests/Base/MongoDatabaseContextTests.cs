@@ -42,9 +42,6 @@ namespace QuickShop.Repository.Mongo.Tests.Base
             Assert.AreEqual(true, foundObject.Boolean);
             Assert.AreEqual(42, foundObject.Integer);
             Assert.AreEqual("test", foundObject.String);
-
-            // Clean up
-            await collection.DeleteOneAsync(Builders<TestAggregateRoot>.Filter.Eq("id", foundObject.Id));
         }
 
         [TestCategory(nameof(IDatabaseContext.LoadAsync))]
@@ -67,9 +64,6 @@ namespace QuickShop.Repository.Mongo.Tests.Base
             Assert.AreEqual(true, foundObject.Boolean);
             Assert.AreEqual(42, foundObject.Integer);
             Assert.AreEqual("test", foundObject.String);
-
-            // Clean up
-            await collection.DeleteOneAsync(Builders<TestAggregateRoot>.Filter.Eq("id", foundObject.Id));
         }
 
         [TestCategory(nameof(IDatabaseContext.LoadAsync))]
@@ -105,9 +99,6 @@ namespace QuickShop.Repository.Mongo.Tests.Base
             Assert.AreEqual(true, foundObjects[0].Boolean);
             Assert.AreEqual(42, foundObjects[0].Integer);
             Assert.AreEqual("test", foundObjects[0].String);
-
-            // Clean up
-            await collection.DeleteOneAsync(Builders<TestAggregateRoot>.Filter.Eq("id", foundObjects[0].Id));
         }
 
         [TestCategory(nameof(IDatabaseContext.DeleteAsync))]

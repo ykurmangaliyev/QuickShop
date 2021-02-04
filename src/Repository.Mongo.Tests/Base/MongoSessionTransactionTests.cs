@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,9 +29,6 @@ namespace QuickShop.Repository.Mongo.Tests.Base
             // Assert - the model should has been created
             var loadedObject = await collection.AsQueryable().SingleOrDefaultAsync(t => t.Id == testObject.Id);
             Assert.IsNotNull(loadedObject);
-
-            // Clean up
-            await collection.DeleteOneAsync(Builders<TestAggregateRoot>.Filter.Eq("id", testObject.Id));
         }
 
         [TestMethod]
@@ -115,8 +113,20 @@ namespace QuickShop.Repository.Mongo.Tests.Base
             var foundList = await collection.AsQueryable().Where(t => allIds.Contains(t.Id)).ToListAsync();
             
             CollectionAssert.AreEquivalent(expectedIds, foundList.Select(t => t.Id).ToArray());
+        }
 
-            // Clean up
+        [TestMethod]
+        public async Task When_TryingToStartATransaction_And_AlreadyInTransaction_Should_ThrowInvalidOperationException()
+        {
+            // Arrange
+            var databaseContext = CreateDatabaseContext();
+
+            using var transaction1 = await databaseContext.StartTransactionAsync();
+
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () =>
+            {
+                await databaseContext.StartTransactionAsync();
+            });
         }
     }
 }
