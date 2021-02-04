@@ -58,5 +58,10 @@ namespace QuickShop.Repository.Abstractions
 
             return Task.CompletedTask;
         }
+
+        public Task<IDatabaseTransaction> StartTransactionAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

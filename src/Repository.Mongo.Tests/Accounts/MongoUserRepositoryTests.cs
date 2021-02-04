@@ -12,12 +12,12 @@ namespace QuickShop.Repository.Mongo.Tests.Accounts
 {
     // TODO: it should not be tested here, Mongo should rely on user-specific logic. Instead, create a model for the test and check that the context works
     [TestClass]
-    public class MongoUserRepositoryTests : BaseMongoIntegrationTest
+    public class MongoUserRepositoryTests : AbstractMongoIntegrationTest
     {
         [TestMethod]
         public async Task Should_WriteUserModel_And_ReadItBack()
         {
-            var repository = new UserRepository(CreateDatabaseContext(new TypeCollectionNameMapper()));
+            var repository = new UserRepository(CreateDatabaseContext());
 
             // Write
             var insertedUser = await repository.CreateAsync("username", "password-hash");
