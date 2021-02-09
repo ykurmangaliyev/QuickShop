@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Domain.Abstractions\Domain.Abstractions.csproj" />
     <ProjectReference Include="..\Domain.Accounts\Domain.Accounts.csproj" />
     <ProjectReference Include="..\Domain.Ping\Domain.Ping.csproj" />
+    <ProjectReference Include="..\PaymentProvider.Stripe\PaymentProvider.Stripe.csproj" />
     <ProjectReference Include="..\Repository.Abstractions\Repository.Abstractions.csproj" />
     <ProjectReference Include="..\Repository.Mongo\Repository.Mongo.csproj" />
   </ItemGroup>

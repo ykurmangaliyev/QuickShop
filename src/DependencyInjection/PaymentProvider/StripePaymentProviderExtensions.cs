@@ -3,19 +3,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using QuickShop.Domain.Accounts.Model.UserAggregate;
+using QuickShop.PaymentProvider.Abstractions;
+using QuickShop.PaymentProvider.Stripe;
+using QuickShop.PaymentProvider.Stripe.Configuration;
 using QuickShop.Repository.Abstractions;
 using QuickShop.Repository.Mongo;
 using QuickShop.Repository.Mongo.CollectionNameMapping;
 using QuickShop.Repository.Mongo.Configuration;
 
-namespace QuickShop.DependencyInjection.Repository
+namespace QuickShop.DependencyInjection.PaymentProvider
 {
     public static class StripePaymentProviderExtensions
     {
-        public static IQuickShopServiceBuilder AddMongoRepository(this IQuickShopServiceBuilder builder)
-            => AddMongoRepository(builder, _ => { });
+        public static IQuickShopServiceBuilder AddStripePaymentProvider(this IQuickShopServiceBuilder builder)
+            => AddStripePaymentProvider(builder, _ => { });
 
-        public static IQuickShopServiceBuilder AddMongoRepository(this IQuickShopServiceBuilder builder, Action<MongoOptions> options)
+        public static IQuickShopServiceBuilder AddStripePaymentProvider(this IQuickShopServiceBuilder builder, Action<StripeOptions> options)
         {
             if (builder == null) 
                 throw new ArgumentNullException(nameof(builder));
@@ -25,16 +28,15 @@ namespace QuickShop.DependencyInjection.Repository
 
             builder.Services.Configure(options);
 
-            builder.Services.AddSingleton<ICollectionNameMapper, TypeCollectionNameMapper>();
-            builder.Services.AddSingleton<IDatabaseContext, MongoDatabaseContext>();
+            builder.Services.AddSingleton<IPaymentProvider, StripePaymentProvider>();
 
             return builder;
         }
 
-        public static IServiceCollection ConfigureMongoRepositoryOptions(this IServiceCollection services, IConfiguration configuration) 
-            => ConfigureMongoRepositoryOptions(services, configuration, MongoOptions.Mongo);
+        public static IServiceCollection ConfigureStripePaymentProviderOptions(this IServiceCollection services, IConfiguration configuration) 
+            => ConfigureStripePaymentProviderOptions(services, configuration, StripeOptions.Stripe);
 
-        public static IServiceCollection ConfigureMongoRepositoryOptions(this IServiceCollection services, IConfiguration configuration, string sectionName)
+        public static IServiceCollection ConfigureStripePaymentProviderOptions(this IServiceCollection services, IConfiguration configuration, string sectionName)
         {
             if (services == null) 
                 throw new ArgumentNullException(nameof(services));
