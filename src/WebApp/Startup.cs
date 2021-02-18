@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using QuickShop.DependencyInjection;
+using QuickShop.DependencyInjection.Logger;
+using QuickShop.DependencyInjection.PaymentProvider;
 using QuickShop.DependencyInjection.Repository;
 using QuickShop.WebApp.Authentication;
 using QuickShop.WebApp.GraphQL;
@@ -40,7 +42,9 @@ namespace QuickShop.WebApp
             services.Configure<JwtBearerAuthenticationOptions>(Configuration.GetSection(JwtBearerAuthenticationOptions.JwtBearerAuthentication));
 
             services.AddQuickShop()
-                .AddMongoRepository();
+                .AddMongoRepository()
+                .AddConsoleLogger()
+                .AddStripePaymentProvider();
 
             // GraphQL
             GraphQLSchema.RegisterAllServices(services);

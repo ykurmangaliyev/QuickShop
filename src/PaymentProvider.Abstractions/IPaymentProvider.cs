@@ -7,6 +7,6 @@ namespace QuickShop.PaymentProvider.Abstractions
     /// </summary>
     public interface IPaymentProvider
     {
-        Task<string> CreateMerchant();
+        Task<string> CreateMerchant(string email);
     }
 }

@@ -10,7 +10,7 @@ using QuickShop.Repository.Mongo.Configuration;
 
 namespace QuickShop.DependencyInjection.Repository
 {
-    public static class StripePaymentProviderExtensions
+    public static class RepositoryMongoExtensions
     {
         public static IQuickShopServiceBuilder AddMongoRepository(this IQuickShopServiceBuilder builder)
             => AddMongoRepository(builder, _ => { });

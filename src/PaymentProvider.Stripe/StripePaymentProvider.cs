@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using QuickShop.PaymentProvider.Abstractions;
 using QuickShop.PaymentProvider.Stripe.Configuration;
+using Stripe;
 
 namespace QuickShop.PaymentProvider.Stripe
 {
@@ -8,14 +10,30 @@ namespace QuickShop.PaymentProvider.Stripe
     {
         private readonly StripeOptions _options;
 
-        public StripePaymentProvider(StripeOptions options)
+        public StripePaymentProvider(IOptions<StripeOptions> options)
         {
-            _options = options;
+            _options = options.Value;
         }
 
-        public Task<string> CreateMerchant()
+        private IStripeClient CreateClient()
         {
-            throw new System.NotImplementedException();
+            return new StripeClient(_options.ApiKey);
+        }
+
+        public async Task<string> CreateMerchant(string email)
+        {
+            var client = CreateClient();
+            var service = new AccountService(client);
+
+            var options = new AccountCreateOptions
+            {
+                Type = "standard",
+                Email = email,
+            };
+
+            var account = await service.CreateAsync(options);
+
+            return account.Id;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace QuickShop.Domain.Abstractions
     public abstract class AbstractAggregateRoot : IAggregateRoot
     {
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
-        public string Id { get; private set; }
+        public string Id { get; protected set; }
 
         public DateTimeOffset CreatedOn { get; private set; } = DateTimeOffset.Now;
 

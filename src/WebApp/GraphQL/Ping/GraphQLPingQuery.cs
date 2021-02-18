@@ -19,11 +19,11 @@ namespace QuickShop.WebApp.GraphQL.Ping
             FieldAsync<PingCheckType>(
                 name: "ping",
                 arguments: new QueryArguments(),
-                resolve: ResolvePingQuery
+                resolve: ResolvePingQueryAsync
             );
         }
 
-        private async Task<object> ResolvePingQuery(IResolveFieldContext<object> context)
+        private async Task<object> ResolvePingQueryAsync(IResolveFieldContext<object> context)
         {
             return await _pingService.Ping();
         }

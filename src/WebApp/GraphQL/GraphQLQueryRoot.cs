@@ -24,10 +24,5 @@ namespace QuickShop.WebApp.GraphQL
                 }
             }
         }
-
-        private void Import<T>(IServiceProvider services) where T : ObjectGraphType
-        {
-            
-        }
     }
 }

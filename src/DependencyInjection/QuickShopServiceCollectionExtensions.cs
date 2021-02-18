@@ -16,14 +16,12 @@ namespace QuickShop.DependencyInjection
             services.AddSingleton<IHashingAlgorithm, Sha512HashingAlgorithm>();
 
             services.AddTransient<IUserAuthService, UserAuthService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddTransient<IUserRepository, UserRepository>();
 
             // Ping
             services.AddSingleton<IPingService, PingService>();
-
-            // Logging
-            services.AddSingleton<ILogger, ConsoleLogger>();
 
             // Return builder
             return new QuickShopServiceBuilder(services);

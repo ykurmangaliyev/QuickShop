@@ -35,9 +35,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Ping", "Domain.Ping\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Ping.Tests", "Domain.Ping.Tests\Domain.Ping.Tests.csproj", "{F7BB0A46-CD05-47B9-AAF9-9514AFDA8F9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProvider.Abstractions", "PaymentProvider.Abstractions\PaymentProvider.Abstractions.csproj", "{C908C74C-C274-4F59-8330-9591717339D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentProvider.Abstractions", "PaymentProvider.Abstractions\PaymentProvider.Abstractions.csproj", "{C908C74C-C274-4F59-8330-9591717339D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProvider.Stripe", "PaymentProvider.Stripe\PaymentProvider.Stripe.csproj", "{60D20510-8114-40A2-9FF2-46C8486E2729}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentProvider.Stripe", "PaymentProvider.Stripe\PaymentProvider.Stripe.csproj", "{60D20510-8114-40A2-9FF2-46C8486E2729}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp.Tests", "WebApp.Tests\WebApp.Tests.csproj", "{A62DF3EA-7DD8-4CF1-B731-EB4A38FAA544}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,10 @@ Global
 		{60D20510-8114-40A2-9FF2-46C8486E2729}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60D20510-8114-40A2-9FF2-46C8486E2729}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60D20510-8114-40A2-9FF2-46C8486E2729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A62DF3EA-7DD8-4CF1-B731-EB4A38FAA544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A62DF3EA-7DD8-4CF1-B731-EB4A38FAA544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A62DF3EA-7DD8-4CF1-B731-EB4A38FAA544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A62DF3EA-7DD8-4CF1-B731-EB4A38FAA544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +129,7 @@ Global
 		{220805F0-968D-4FEF-91F6-EFDF3F4BB1C8} = {49C57272-04CF-4914-BA81-2639CAE61BE3}
 		{2E46C841-190F-4A10-A176-F325E34FC904} = {49C57272-04CF-4914-BA81-2639CAE61BE3}
 		{F7BB0A46-CD05-47B9-AAF9-9514AFDA8F9F} = {49C57272-04CF-4914-BA81-2639CAE61BE3}
+		{A62DF3EA-7DD8-4CF1-B731-EB4A38FAA544} = {49C57272-04CF-4914-BA81-2639CAE61BE3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EEFD68EC-0F6F-4565-88F8-DCEA3A14B206}
