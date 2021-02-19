@@ -73,7 +73,7 @@ const postsSlice = createSlice({
 
 export const signInAsync = (username: string, password: string) => {
   return async function (dispatch: any): Promise<void> {
-    const result = await fetch('/auth',
+    const result = await fetch('/api/auth',
       {
         method: 'POST',
         body: JSON.stringify({ username, password }), 
@@ -102,7 +102,7 @@ export const signInAsync = (username: string, password: string) => {
 
 export const signOutAsync = () => {
   return async function (dispatch: any): Promise<void> {
-    const result = await fetch('/auth',
+    const result = await fetch('/api/auth',
       {
         method: 'DELETE',
         body: '{}',

@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuickShop.Domain.Accounts.Authentication;
-using QuickShop.Domain.Ping;
 using QuickShop.WebApp.Authentication;
 using QuickShop.WebApp.Model;
 
 namespace QuickShop.WebApp.Controllers
-{
+{ 
     [ApiController]
     [Route("api/auth")]
     public class AuthController : Controller
@@ -48,6 +48,7 @@ namespace QuickShop.WebApp.Controllers
                 {
                     Expires = DateTimeOffset.Now.AddDays(7),
                     HttpOnly = false,
+                    Secure = false,
                 }
             );
 

@@ -2,9 +2,11 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,11 +43,22 @@ namespace QuickShop.WebApp
                 .AddStripePaymentProvider();
 
             // API
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
 
             // Authentication
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
                     var configuration = Configuration
@@ -122,9 +135,9 @@ namespace QuickShop.WebApp
             app.UseDefaultFiles(defaultFileOptions);
             app.UseStaticFiles();
 
-            app.UseAuthentication();
-
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
