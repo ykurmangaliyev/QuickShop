@@ -2,7 +2,7 @@
 
 namespace QuickShop.WebApp.Model
 {
-    public class AuthenticateRequest
+    public class SignInRequest
     {
         [Required(AllowEmptyStrings = false)]
         public string Username { get; set; }

@@ -1,10 +1,6 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using GraphiQl;
-using GraphQL;
-using GraphQL.NewtonsoftJson;
-using GraphQL.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,8 +15,6 @@ using QuickShop.DependencyInjection.Logger;
 using QuickShop.DependencyInjection.PaymentProvider;
 using QuickShop.DependencyInjection.Repository;
 using QuickShop.WebApp.Authentication;
-using QuickShop.WebApp.GraphQL;
-using QuickShop.WebApp.GraphQL.Ping;
 
 namespace QuickShop.WebApp
 {
@@ -45,9 +39,6 @@ namespace QuickShop.WebApp
                 .AddMongoRepository()
                 .AddConsoleLogger()
                 .AddStripePaymentProvider();
-
-            // GraphQL
-            GraphQLSchema.RegisterAllServices(services);
 
             // API
             services.AddControllers();
@@ -130,8 +121,6 @@ namespace QuickShop.WebApp
 
             app.UseDefaultFiles(defaultFileOptions);
             app.UseStaticFiles();
-
-            app.UseGraphiQl("/graphiql", "/graphql");
 
             app.UseAuthentication();
 

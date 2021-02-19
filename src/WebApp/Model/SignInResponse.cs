@@ -1,6 +1,6 @@
 ﻿namespace QuickShop.WebApp.Model
 {
-    public class AuthenticateResponse
+    public class SignInResponse
     {
         public string ResultCode { get; set; }
     }

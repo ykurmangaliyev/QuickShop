@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuickShop.Domain.Accounts.Authentication;
+using QuickShop.Domain.Ping;
 using QuickShop.WebApp.Authentication;
 using QuickShop.WebApp.Model;
 
 namespace QuickShop.WebApp.Controllers
 {
     [ApiController]
-    [Route("auth")]
+    [Route("api/auth")]
     public class AuthController : Controller
     {
         private readonly JwtTokenGenerator _jwtTokenGenerator;
@@ -23,18 +24,18 @@ namespace QuickShop.WebApp.Controllers
             _userAuthService = userAuthService;
         }
 
-        // POST /auth
+        // POST /api/auth
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<ActionResult<AuthenticateResponse>> SignIn(AuthenticateRequest request)
+        public async Task<ActionResult<SignInResponse>> SignIn(SignInRequest request)
         {
             var authAttempt = await _userAuthService.AuthenticateAsync(request.Username, request.Password);
 
             if (!authAttempt.IsSuccess)
             {
-                return StatusCode((int) HttpStatusCode.Unauthorized, new AuthenticateResponse
+                return StatusCode((int) HttpStatusCode.Unauthorized, new SignInResponse
                 {
                     ResultCode = authAttempt.Code.ToString("G"),
                 });
@@ -50,13 +51,13 @@ namespace QuickShop.WebApp.Controllers
                 }
             );
 
-            return Ok(new AuthenticateResponse
+            return Ok(new SignInResponse
             {
                 ResultCode = authAttempt.Code.ToString("G"),
             });
         }
 
-        // DELETE /auth
+        // DELETE /api/auth
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public new ActionResult SignOut()
